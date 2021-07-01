@@ -1,8 +1,3 @@
-provider "aws" {
-  profile = "work"
-  region  = "eu-west-2"
-}
-
 data "aws_route53_zone" "franscape" {
   name         = "franscape.io"
   private_zone = false
@@ -32,7 +27,7 @@ data "archive_file" "source" {
   source_dir = path.module
 }
 
-module "eu_cert" {
+module "cert" {
   source  = "terraform-aws-modules/acm/aws"
   version = "~> v2.0"
 

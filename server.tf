@@ -7,7 +7,8 @@ resource "aws_instance" "instance" {
   subnet_id                   = module.vpc.public_subnets[0]
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
   tags = {
-    Name = "Strapi Server"
+    Name = "${var.id}_strapi_server"
+    Client = var.id
   }
 
   iam_instance_profile = "ec2-access-s3"
@@ -46,31 +47,6 @@ EOF
   }
 }
 
-resource "aws_security_group" "lb_secgroup" {
-  name        = "strapi_lb_secgroup"
-  description = "Allow TLS inbound traffic"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress {
-    description = "TLS from VPC"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "strapi_lb_secgroup"
-  }
-}
-
 resource "aws_lb" "api" {
   name            = "strapi-lb"
   internal        = false
@@ -79,6 +55,7 @@ resource "aws_lb" "api" {
 
   tags = {
     Name = "strapi_api_alb"
+    Client = var.id
   }
 }
 
@@ -87,7 +64,7 @@ resource "aws_lb_listener" "api" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.cert.arn
+  certificate_arn   = module.cert.arn
 
   default_action {
     type             = "forward"
