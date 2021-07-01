@@ -35,6 +35,11 @@ module "cert" {
   zone_id     = data.aws_route53_zone.franscape.zone_id
 }
 
+resource "aws_s3_bucket" "static-storage" {
+  bucket = "franscape-strapi-storage"
+  acl    = "private"
+}
+
 resource "aws_s3_bucket_object" "object" {
   bucket = "franscape-data-archive"
   key    = "strapi.zip"
