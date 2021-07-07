@@ -1,6 +1,6 @@
 resource "aws_instance" "instance" {
   depends_on                  = [aws_s3_bucket_object.object]
-  ami                         = "ami-0ff4c8fb495a5a50d"
+  ami                         = "ami-0fa5b716c0d424f70"
   instance_type               = "t2.small"
   associate_public_ip_address = true
   monitoring                  = true
@@ -15,22 +15,6 @@ resource "aws_instance" "instance" {
 
   user_data = <<EOF
 #!/bin/bash
-sudo apt update
-sudo apt install build-essential curl unzip -y
-
-echo "${aws_s3_bucket_object.object.etag}" # Just to force update
-
-ln /usr/bin/python3 /usr/bin/python
-
-curl https://gist.githubusercontent.com/ebdmuir/785b924e4fd4da706bd5749db413eada/raw/3eac12f501926beb0abc8cd04548e7e241fd0391/aws-cli-ubuntu | sh
-
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-sudo apt-get install nodejs
-
-su ubuntu -c "mkdir ~/.npm-global && npm config set prefix '~/.npm-global'"
-su ubuntu -c "npm i -g pm2"
-su ubuntu -c "echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile"
-
 aws s3 cp s3://franscape-data-archive/strapi-${var.id}.zip /home/ubuntu
 chown ubuntu:ubuntu /home/ubuntu/strapi.zip
 unzip /home/ubuntu/strapi.zip -d /home/ubuntu/strapi
