@@ -11,3 +11,7 @@ output "secret" {
 output "address" {
     value = "https://${var.id}.strapi.franscape.io"
 }
+
+output "bucket" {
+    value = aws_s3_bucket.storage
+}
