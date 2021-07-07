@@ -24,7 +24,7 @@ data "archive_file" "source" {
     "terraform.tfstate.backup"
   ]
 
-  source_dir = path.module
+  source_dir = path.cwd
 }
 
 module "cert" {
