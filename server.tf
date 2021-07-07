@@ -15,7 +15,7 @@ data "aws_ami" "base_ami" {
 
 resource "aws_instance" "instance" {
   depends_on                  = [aws_s3_bucket_object.object]
-  ami                         = "ami-0f5f108b6ba73ff24"
+  ami                         = data.aws_ami.base_ami.id
   instance_type               = "t2.small"
   associate_public_ip_address = true
   monitoring                  = true
