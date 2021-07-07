@@ -36,13 +36,13 @@ module "cert" {
 }
 
 resource "aws_s3_bucket" "static-storage" {
-  bucket = "franscape-strapi-storage"
+  bucket = "${var.id}-strapi-storage"
   acl    = "private"
 }
 
 resource "aws_s3_bucket_object" "object" {
   bucket = "franscape-data-archive"
-  key    = "strapi.zip"
+  key    = "strapi-${var.id}.zip"
   source = "source.zip"
 
   etag = data.archive_file.source.output_md5

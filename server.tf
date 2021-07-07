@@ -31,7 +31,7 @@ su ubuntu -c "mkdir ~/.npm-global && npm config set prefix '~/.npm-global'"
 su ubuntu -c "npm i -g pm2"
 su ubuntu -c "echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile"
 
-aws s3 cp s3://franscape-data-archive/strapi.zip /home/ubuntu
+aws s3 cp s3://franscape-data-archive/strapi-${var.id}.zip /home/ubuntu
 chown ubuntu:ubuntu /home/ubuntu/strapi.zip
 unzip /home/ubuntu/strapi.zip -d /home/ubuntu/strapi
 chown ubuntu:ubuntu -R /home/ubuntu/strapi
@@ -48,7 +48,7 @@ EOF
 }
 
 resource "aws_lb" "api" {
-  name            = "strapi-lb"
+  name            = "${var.id}-strapi-lb"
   internal        = false
   subnets         = module.vpc.public_subnets
   security_groups = [aws_security_group.lb_secgroup.id]
@@ -73,7 +73,7 @@ resource "aws_lb_listener" "api" {
 }
 
 resource "aws_lb_target_group" "api" {
-  name     = "strapi-api"
+  name     = "${var.id}-strapi-api"
   port     = 1337
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id
