@@ -1,6 +1,6 @@
 resource "aws_instance" "instance" {
   depends_on                  = [aws_s3_bucket_object.object]
-  ami                         = "ami-0fa5b716c0d424f70"
+  ami                         = "ami-055652998a9463c6e"
   instance_type               = "t2.small"
   associate_public_ip_address = true
   monitoring                  = true
