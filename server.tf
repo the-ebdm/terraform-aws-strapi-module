@@ -1,3 +1,23 @@
+data "aws_ami" "base_ami" {
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+
+  filter {
+    name   = "tag:ami"
+    values = ["base_api_instance"]
+  }
+
+  filter {
+    name   = "tag:branch"
+    values = [var.branch]
+  }
+
+  most_recent = true
+  owners      = ["868476632230"]
+}
+
 resource "aws_instance" "instance" {
   depends_on                  = [aws_s3_bucket_object.object]
   ami                         = "ami-0f5f108b6ba73ff24"
@@ -16,8 +36,8 @@ resource "aws_instance" "instance" {
   user_data = <<EOF
 #!/bin/bash
 aws s3 cp s3://franscape-data-archive/strapi-${var.id}.zip /home/ubuntu
-chown ubuntu:ubuntu /home/ubuntu/strapi.zip
-unzip /home/ubuntu/strapi.zip -d /home/ubuntu/strapi
+chown ubuntu:ubuntu /home/ubuntu/strapi-${var.id}.zip
+unzip /home/ubuntu/strapi-${var.id}.zip -d /home/ubuntu/strapi
 chown ubuntu:ubuntu -R /home/ubuntu/strapi
 
 su ubuntu -c "cd ~/strapi && npm install && NODE_ENV=production npm run build"
