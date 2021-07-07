@@ -6,12 +6,7 @@ data "aws_ami" "base_ami" {
 
   filter {
     name   = "tag:ami"
-    values = ["base_api_instance"]
-  }
-
-  filter {
-    name   = "tag:branch"
-    values = [var.branch]
+    values = ["strapi-base"]
   }
 
   most_recent = true
@@ -42,8 +37,6 @@ chown ubuntu:ubuntu -R /home/ubuntu/strapi
 
 su ubuntu -c "cd ~/strapi && npm install && NODE_ENV=production npm run build"
 su ubuntu -c "/home/ubuntu/.npm-global/bin/pm2 start ~/strapi/ecosystem.config.js"
-
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDPspTmajJM27BckXYS/37sXNLiShsMoERkUbBjLt4uSgpdaxgVmxEWunMeQy53VsdBtyVpMIwnZzTeabiOY3bUGqAe/gGWDKS9mPKigPWNX5caVJficPWzmVeuDEfbm1AHkcDzzK4i9Qw98d2nvP+7EJulJ0Q6lhHxLz20zxKbYR1KbwuGDkPHK4Gh51NfohGG2+0m+mszEHnhlN6HURsU7C9xshCrPfNEie0+tlGHjq/2tiXrxZqlDJT8XZoINCon/CqdYLzkYBX/QiABrqi/qICBwSpRU6b0GVzIoe/0UfRSeK9VNqIsQDOGPhHGbSgsUrWoiCTKh7LKtaSk3I1LfLO6CUoeJ8PGgnh11caOUAIpfoaVuu4PuPBuvyCyQxt2O7b1W08q1DqOfDqM0uioPQ8u9gOB9zKgK5K+VBf9+R0LeGibN+sRS4BcKpKwAj2/FBulOendwTuF5FhGL1lyRWhdgTKxoqLOkSSTuGXB4suuwro5s9d8iqzhqiDkgU0= ericmuir@devmac.local" > /home/ubuntu/.ssh/authorized_keys
 EOF
 
   lifecycle {
