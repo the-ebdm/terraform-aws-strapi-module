@@ -27,7 +27,7 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   ingress {
-    description = "SSH"
+    description = "Strapi Input"
     from_port   = 1337
     to_port     = 1337
     protocol    = "tcp"
