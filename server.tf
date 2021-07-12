@@ -40,8 +40,9 @@ chown ubuntu:ubuntu -R /home/ubuntu/strapi
 su ubuntu -c "cd ~/strapi && npm install && NODE_ENV=production npm run build"
 su ubuntu -c "aws s3 cp s3://franscape-data-archive/${var.id}.db /home/ubuntu/strapi/.tmp/data.db"
 su ubuntu -c "/home/ubuntu/.npm-global/bin/pm2 start ~/strapi/ecosystem.config.js"
-
-echo "*/5 * * * * root /bin/sh aws s3 cp /home/ubuntu/strapi/.tmp/data.db s3://franscape-data-archive/${var.id}.db" >> /etc/cron.d/backup_database
+echo "aws s3 cp /home/ubuntu/strapi/.tmp/data.db s3://franscape-data-archive/${var.id}.db" > /bin/backupdb
+chmod +x /bin/backupdb
+su ubuntu -c "(crontab -l ; echo "*/5 * * * * /bin/backupdb") | sort - | uniq - | crontab -"
 EOF
 
   lifecycle {
