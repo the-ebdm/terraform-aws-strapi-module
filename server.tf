@@ -30,6 +30,7 @@ resource "aws_instance" "instance" {
 
   user_data = <<EOF
 #!/bin/bash
+echo ${data.archive_file.source.output_md5}
 aws s3 cp s3://franscape-data-archive/strapi-${var.id}.zip /home/ubuntu
 chown ubuntu:ubuntu /home/ubuntu/strapi-${var.id}.zip
 unzip /home/ubuntu/strapi-${var.id}.zip -d /home/ubuntu/strapi
