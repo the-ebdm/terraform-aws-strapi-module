@@ -24,6 +24,7 @@ resource "aws_instance" "instance" {
   tags = {
     Name = "${var.id}_strapi_server"
     Client = var.id
+    Source = data.archive_file.source.output_md5
   }
 
   iam_instance_profile = "ec2-access-s3"
