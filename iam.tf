@@ -20,6 +20,11 @@ resource "aws_iam_user_policy" "storage" {
       ],
       "Effect": "Allow",
       "Resource": "${aws_s3_bucket.storage.arn}/*"
+    },
+    {
+      "Action": ["ses:*"],
+      "Effect": "Allow",
+      "Resource": "*"
     }
   ]
 }
