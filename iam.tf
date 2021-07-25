@@ -60,9 +60,8 @@ resource "aws_iam_instance_profile" "node" {
 
 # Create a policy for the role
 resource "aws_iam_policy" "node" {
-  name        = var.ec2_iam_role_name
+  name        = aws_iam_role.node.name
   path        = "/"
-  description = var.policy_description
   policy      = <<EOF
 {
   "Version": "2012-10-17",
@@ -86,7 +85,7 @@ EOF
 
 # Attaches the policy to the IAM role
 resource "aws_iam_policy_attachment" "node" {
-  name       = var.ec2_iam_role_name
+  name       = aws_iam_role.node.name
   roles      = [aws_iam_role.node.name]
   policy_arn = aws_iam_policy.node.arn
 }
