@@ -93,18 +93,18 @@ resource "aws_lb_target_group_attachment" "main" {
 }
 
 resource "aws_route53_record" "server" {
-  name            = "server.${var.id}.strapi.franscape.io"
+  name            = "server.${var.domain}"
   type            = "A"
-  zone_id         = "Z09936565SB6P6INZE3R"
+  zone_id         = var.zone_id
   ttl             = 60
   records         = [aws_instance.instance.public_ip]
   allow_overwrite = true
 }
 
 resource "aws_route53_record" "api" {
-  name            = "${var.id}.strapi.franscape.io"
+  name            = var.domain
   type            = "CNAME"
-  zone_id         = "Z09936565SB6P6INZE3R"
+  zone_id         = var.zone_id
   ttl             = 60
   records         = [aws_lb.api.dns_name]
   allow_overwrite = true
