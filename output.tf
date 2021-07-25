@@ -9,7 +9,7 @@ output "secret" {
 }
 
 output "address" {
-    value = "https://${var.id}.strapi.franscape.io"
+    value = "https://${var.domain}"
 }
 
 output "bucket" {
