@@ -15,3 +15,7 @@ output "address" {
 output "bucket" {
     value = aws_s3_bucket.storage
 }
+
+output "vpc" {
+    value = module.vpc
+}
