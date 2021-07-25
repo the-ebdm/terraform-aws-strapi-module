@@ -24,8 +24,7 @@
       "ami_name": "strapi-base-{{timestamp}}",
 			"tags": {
 				"ami": "strapi-base"
-			},
-			"iam_instance_profile": "ec2-access-s3"
+			}
     }
   ],
 	"provisioners": [

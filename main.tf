@@ -1,8 +1,3 @@
-data "aws_route53_zone" "franscape" {
-  name         = "franscape.io"
-  private_zone = false
-}
-
 data "archive_file" "source" {
   type        = "zip"
   output_path = "source.zip"
@@ -31,8 +26,8 @@ module "cert" {
   source  = "terraform-aws-modules/acm/aws"
   version = "~> v2.0"
 
-  domain_name = "${var.id}.strapi.franscape.io"
-  zone_id     = data.aws_route53_zone.franscape.zone_id
+  domain_name = var.domain
+  zone_id     = var.zone_id
 }
 
 resource "aws_s3_bucket" "storage" {
