@@ -27,7 +27,7 @@ resource "aws_instance" "instance" {
     Source = data.archive_file.source.output_md5
   }
 
-  iam_instance_profile = "ec2-access-s3"
+  iam_instance_profile = aws_iam_instance_profile.node.name
 
   user_data = <<EOF
 #!/bin/bash
