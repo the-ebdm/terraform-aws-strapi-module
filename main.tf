@@ -35,8 +35,13 @@ resource "aws_s3_bucket" "storage" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket" "transfer" {
+  bucket = "${var.id}-transfer-bucket"
+  acl    = "private"
+}
+
 resource "aws_s3_bucket_object" "object" {
-  bucket = "franscape-data-archive"
+  bucket = aws_s3_bucket.storage.bucket
   key    = "strapi-${var.id}.zip"
   source = "source.zip"
 
