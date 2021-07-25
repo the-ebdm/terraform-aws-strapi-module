@@ -19,7 +19,7 @@ resource "aws_iam_user_policy" "storage" {
         "s3:*"
       ],
       "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.storage.arn}/*"
+      "Resource": ["${aws_s3_bucket.storage.arn}/*", "${aws_s3_bucket.backup.arn}/*", "${aws_s3_bucket.transfer.arn}/*"]
     },
     {
       "Action": ["ses:*"],

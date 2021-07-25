@@ -40,6 +40,11 @@ resource "aws_s3_bucket" "transfer" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket" "backup" {
+  bucket = "${var.id}-backup-bucket"
+  acl    = "private"
+}
+
 resource "aws_s3_bucket_object" "object" {
   bucket = aws_s3_bucket.storage.bucket
   key    = "strapi-${var.id}.zip"
