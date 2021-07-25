@@ -14,3 +14,8 @@ variable "domain" {
 variable "zone_id" {
   type = string
 }
+
+variable "aws_account" {
+  type = string
+  description = "AWS Account ID number"
+}

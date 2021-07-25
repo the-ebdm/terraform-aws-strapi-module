@@ -10,7 +10,7 @@ data "aws_ami" "base_ami" {
   }
 
   most_recent = true
-  owners      = ["868476632230"]
+  owners      = [var.aws_account]
 }
 
 resource "aws_instance" "instance" {
