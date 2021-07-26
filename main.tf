@@ -47,7 +47,7 @@ resource "aws_s3_bucket" "backup" {
 
 resource "aws_s3_bucket_object" "object" {
   bucket = aws_s3_bucket.storage.bucket
-  key    = "strapi-${var.id}.zip"
+  key    = "strapi-source.zip"
   source = "source.zip"
 
   etag = data.archive_file.source.output_md5
