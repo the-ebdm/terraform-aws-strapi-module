@@ -33,6 +33,21 @@ module "cert" {
 resource "aws_s3_bucket" "storage" {
   bucket = "${var.id}-strapi-storage"
   acl    = "private"
+
+  cors_rule {
+    allowed_headers = [
+      "*",
+    ]
+    allowed_methods = [
+      "GET",
+    ]
+    allowed_origins = [
+      "*",
+    ]
+    expose_headers  = []
+    max_age_seconds = 0
+  }
+
 }
 
 resource "aws_s3_bucket" "transfer" {
