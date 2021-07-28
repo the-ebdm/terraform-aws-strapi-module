@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">=3.15.0"
+    }
+  }
+}
+
 data "archive_file" "source" {
   type        = "zip"
   output_path = "source.zip"
@@ -34,6 +43,12 @@ resource "aws_s3_bucket" "storage" {
   bucket = "${var.id}-strapi-storage"
   acl    = "private"
 
+  tags = {
+    System = "strapi"
+    Subsystem = "storage"
+    Client = var.id
+  }
+
   cors_rule {
     allowed_headers = [
       "*",
@@ -47,17 +62,28 @@ resource "aws_s3_bucket" "storage" {
     expose_headers  = []
     max_age_seconds = 0
   }
-
 }
 
 resource "aws_s3_bucket" "transfer" {
-  bucket = "${var.id}-transfer-bucket"
+  bucket = "${var.id}-strapi-transfer"
   acl    = "private"
+
+  tags = {
+    System = "strapi"
+    Subsystem = "transfer"
+    Client = var.id
+  }
 }
 
 resource "aws_s3_bucket" "backup" {
-  bucket = "${var.id}-backup-bucket"
+  bucket = "${var.id}-strapi-transfer"
   acl    = "private"
+
+  tags = {
+    System = "strapi"
+    Subsystem = "backup"
+    Client = var.id
+  }
 }
 
 resource "aws_s3_bucket_object" "object" {

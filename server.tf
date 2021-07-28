@@ -32,7 +32,7 @@ resource "aws_instance" "instance" {
   user_data = <<EOF
 #!/bin/bash
 echo ${data.archive_file.source.output_md5}
-aws s3 cp s3://${aws_s3_bucket.transfer.bucket}/${aws_s3_bucket_object.object.id}/home/ubuntu
+aws s3 cp s3://${aws_s3_bucket.transfer.bucket}/${aws_s3_bucket_object.object.id} /home/ubuntu
 chown ubuntu:ubuntu /home/ubuntu/strapi-${var.id}.zip
 unzip /home/ubuntu/strapi-${var.id}.zip -d /home/ubuntu/strapi
 chown ubuntu:ubuntu -R /home/ubuntu/strapi
