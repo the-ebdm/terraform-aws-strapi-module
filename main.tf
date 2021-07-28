@@ -76,7 +76,7 @@ resource "aws_s3_bucket" "transfer" {
 }
 
 resource "aws_s3_bucket" "backup" {
-  bucket = "${var.id}-strapi-transfer"
+  bucket = "${var.id}-strapi-backup"
   acl    = "private"
 
   tags = {
@@ -87,7 +87,7 @@ resource "aws_s3_bucket" "backup" {
 }
 
 resource "aws_s3_bucket_object" "object" {
-  bucket = aws_s3_bucket.storage.bucket
+  bucket = aws_s3_bucket.transfer.bucket
   key    = "strapi-source.zip"
   source = "source.zip"
 

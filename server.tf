@@ -34,13 +34,13 @@ resource "aws_instance" "instance" {
 echo ${data.archive_file.source.output_md5}
 aws s3 cp s3://${aws_s3_bucket.transfer.bucket}/${aws_s3_bucket_object.object.id} /home/ubuntu
 chown ubuntu:ubuntu /home/ubuntu/strapi-${var.id}.zip
-unzip /home/ubuntu/strapi-${var.id}.zip -d /home/ubuntu/strapi
+unzip /home/ubuntu/strapi-source.zip -d /home/ubuntu/strapi
 chown ubuntu:ubuntu -R /home/ubuntu/strapi
 
 su ubuntu -c "cd ~/strapi && npm install && NODE_ENV=production npm run build"
-su ubuntu -c "aws s3 cp s3://${var.id}-backup-bucket/${var.id}.db /home/ubuntu/strapi/.tmp/data.db"
+su ubuntu -c "aws s3 cp s3://${aws_s3_bucket.backup.bucket}/database.db /home/ubuntu/strapi/.tmp/data.db"
 su ubuntu -c "/home/ubuntu/.npm-global/bin/pm2 start ~/strapi/ecosystem.config.js"
-echo "/usr/local/bin/aws s3 cp /home/ubuntu/strapi/.tmp/data.db s3://${var.id}-backup-bucket/${var.id}.db" > /bin/backupdb
+echo "/usr/local/bin/aws s3 cp /home/ubuntu/strapi/.tmp/data.db s3://${aws_s3_bucket.backup.bucket}/database.db" > /bin/backupdb
 chmod +x /bin/backupdb
 su ubuntu -c "(crontab -l ; echo \"* * * * * /bin/backupdb\") | sort - | uniq - | crontab -"
 EOF
